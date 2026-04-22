@@ -69,7 +69,7 @@ begin
         where e.id = p_id;
 	else
 		signal sqlstate '45000'
-		set message_text = 'no existe el empelado';
+		set message_text = 'no existe el empleado';
 	end if;
     return nombre_dep;
 end//
