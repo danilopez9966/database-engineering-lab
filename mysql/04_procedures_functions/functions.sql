@@ -49,3 +49,29 @@ begin
 end//
 delimiter ;
 select num_employees(3);
+
+drop function if exists name_department_employee;
+delimiter //
+create function name_department_employee(p_id int)
+returns varchar(100)
+deterministic
+begin
+	declare empleado int;
+	declare nombre_dep varchar(100);
+	
+    select count(*) into empleado
+    from employees
+    where id = p_id;
+    
+    if empleado > 0 then
+		select d.name into nombre_dep
+        from employees as e join departments as d on (d.id = e.department_id)
+        where e.id = p_id;
+	else
+		signal sqlstate '45000'
+		set message_text = 'no existe el empelado';
+	end if;
+    return nombre_dep;
+end//
+delimiter ;
+select name_department_employee(2);
