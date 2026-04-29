@@ -16,3 +16,12 @@ department_id int not null,
 constraint pk_employees primary key (id),
 constraint fk_employees foreign key (department_id) references departments (id) on update cascade on delete cascade
 );
+
+CREATE TABLE salary_history (
+id INT AUTO_INCREMENT PRIMARY KEY,
+employee_id INT NOT NULL,
+old_salary DECIMAL(10,2),
+new_salary DECIMAL(10,2),
+change_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+FOREIGN KEY (employee_id) REFERENCES employees(id)
+);
