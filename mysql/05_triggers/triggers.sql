@@ -21,3 +21,26 @@ begin
 		set message_text = 'no se puede insertar un salario menor de 20000';
     end if;
 end //
+
+drop trigger if exists delete_emp;
+delimiter //
+create trigger delete_emp
+after delete on employees
+for each row
+begin
+	insert into deleted_employees(employee_id,name,position,salary,department_id) values(old.id,old.name,old.position,old.salary,old.department_id);
+end //
+delimiter ;
+
+drop trigger if exists validate_delete_emp;
+delimiter //
+create trigger validate_delete_emp
+before delete on employees
+for each row
+begin
+	if old.salary > 40000 then
+		signal sqlstate '45000'
+		set message_text = 'no se puede borrar el empleado con un salario mayor de 40000';
+    end if;
+end //
+delimiter ;
